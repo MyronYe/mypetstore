@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<h3 th:text="#{accountInfo}">Account Information</h3>
+
+<table>
+    <tr>
+        <td th:text="#{firstName}">First name:</td>
+        <td><input type="text" name="firstName" /></td>
+    </tr>
+    <tr>
+        <td th:text="#{lastName}">Last name:</td>
+        <td><input type="text" name="lastName" /></td>
+    </tr>
+    <tr>
+        <td th:text="#{email}">Email:</td>
+        <td><input type="text" name="email" /></td>
+    </tr>
+    <tr>
+        <td th:text="#{phone}">Phone:</td>
+        <td><input type="text" name="phone" /></td>
+    </tr>
+    <tr>
+        <td th:text="#{address1}">Address 1:</td>
+        <td><input type="text" name="address1" /></td>
+    </tr>
+    <tr>
+        <td th:text="#{address2}">Address 2:</td>
+        <td><input type="text" name="address2" size="40" /></td>
+    </tr>
+    <tr>
+        <td th:text="#{city}">City:</td>
+        <td><input type="text" name="city" /></td>
+    </tr>
+    <tr>
+        <td th:text="#{state}">State:</td>
+        <td><input type="text" name="state" size="4" /></td>
+    </tr>
+    <tr>
+        <td th:text="#{zip}">Zip:</td>
+        <td><input type="text" name="zip" size="10" /></td>
+    </tr>
+    <tr>
+        <td th:text="country">Country:</td>
+        <td><input type="text" name="country" size="15" /></td>
+    </tr>
+</table>
+
+<h3 th:text="#{profileInfo}">Profile Information</h3>
+
+<table>
+    <tr>
+        <td th:text="#{languagePreference}">Language Preference:</td>
+        <td><select name="languagePreference">
+            <!-- 循环 -->
+            <option th:text="#{chinese}">chinese</option>
+            <option selected="selected" th:text="#{english}">english</option>
+            <option th:text="#{japanese}">japanese</option>
+        </select></td>
+    </tr>
+    <tr>
+        <td th:text="#{favouriteCategory}">Favourite Category:</td>
+        <td><select name="favouriteCategoryId">
+            <option th:text="#{fish}">FISH</option>
+            <option selected="selected" th:text="#{dogs}">DOGS</option>
+            <option th:text="#{reptiles}">REPTILES</option>
+            <option th:text="#{cats}">CATS</option>
+            <option th:text="#{birds}">BIRDS</option>
+        </select></td>
+    </tr>
+    <tr>
+        <td th:text="#{listOption}">Enable MyList</td>
+        <td><input type="checkbox" name="listOption"/></td>
+    </tr>
+    <tr>
+        <td th:text="#{bannerOption}">Enable MyBanner</td>
+        <td><input type="checkbox" name="bannerOption"/></td>
+    </tr>
+    <tr>
+        <td th:text="#{verificationCode}">验证码:</td>
+        <td>
+            <input type="text" name="checkCode" id="checkCode"/>
+        </td>
+        <td>
+            <img src="/account/pictureCheckCode" id="CreateCheckCode" align="middle" >
+            <br>
+            <a href="" onclick="myReload()" style="font-size:12px;color:red;" th:text="#{signon_msg_v}">看不清，换一个</a>
+        </td>
+    </tr>
+
+</table>
+
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/template_head::head('Item: '+${item.itemId})">
+
+</head>
+
+<body>
+<header th:replace="common/template_menu::header">
+</header>
+
+<div id="Content">
+    <div id="BackLink">
+        <a th:href="@{/catalog/product(productId=${session.product.productId})}">Return to Product</a>
+    </div>
+
+    <div id="Catalog">
+
+        <table>
+            <tr>
+                <td th:utext="${session.product.description}"></td>
+            </tr>
+            <tr>
+                <td th:text="${session.item.itemId}"><b>EST-16</b></td>
+            </tr>
+            <tr>
+                <td th:text="${session.item.attribute1}?:' '+ ${session.item.attribute2}+ ${session.item.attribute3}+ ${session.item.attribute4}+ ${session.item.attribute5}+ ${session.item.product.name} "><b><font size="4">Adult Female Persian</font></b></td>
+            </tr>
+            <tr>
+                <td th:text="${session.product.name}">Persian</td>
+            </tr>
+            <tr>
+                <td th:if="${session.item.quantity <= 0}">
+                    Back ordered.
+                </td>
+                <td th:if="${session.item.quantity > 0}" th:text="${session.item.quantity} + ' in Stock'">
+                </td>
+            </tr>
+            <tr>
+                <td th:text="${session.item.listPrice}">$93.50</td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a class="Button" th:href="@{/cart/addItemToCart(workingItemId=${session.item.itemId})}">Add to Cart</a>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+
+</div>
+
+<footer th:replace="common/template_menu::footer">
+</footer>
+</body>
+
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/template_head::head('Register')">
+
+</head>
+<body>
+<header th:replace="common/template_menu::header">
+</header>
+
+<script type="text/javascript">
+    var xmlHttpRequest;
+    function createXMLHttpRequest()
+    {
+        if (window.XMLHttpRequest) //非IE浏览器
+        {
+            xmlHttpRequest = new XMLHttpRequest();
+        }
+        else if (window.ActiveObject)//IE6以上浏览器
+        {
+            xmlHttpRequest = new ActiveObject("Msxml2.XMLHTTP");
+        }
+        else //IE6及以下浏览器
+        {
+            xmlHttpRequest = new ActiveObject("Microsoft.XMLHTTP");
+        }
+    }
+
+    function usernameIsExist()
+    {
+        var username = document.userInfo.username.value;
+        sendRequest("/account/usernameValidation?username=" + username);
+    }
+    //"@{/account/usernameValidation(username=username)}"
+
+    function sendRequest(url){
+        createXMLHttpRequest();
+        xmlHttpRequest.open("GET", url, true);
+        xmlHttpRequest.onreadystatechange = processResponse;
+        xmlHttpRequest.send(null);
+    }
+
+    function processResponse(){
+        if(xmlHttpRequest.readyState == 4){
+            if(xmlHttpRequest.status == 200){
+                var responseInfo = xmlHttpRequest.responseXML.getElementsByTagName("msg")[0].firstChild.data;
+                var div1 = document.getElementById("usernameInfo");
+                if(responseInfo == "Exist"){
+                    div1.innerHTML="<font color='red'>The User ID is Exist</font>";
+                }
+                else{
+                    div1.innerHTML="<font color='green'>The User ID is Available</font>";
+                }
+            }
+        }
+    }
+
+    function myReload() {
+        document.getElementById("CreateCheckCode").src = document.getElementById("CreateCheckCode").src+ "?nocache=" + new Date().getTime();
+    }
+</script>
+
+
+<div id="Content">
+    <div id="Catalog">
+
+        <form action="/account/newAccount" method="post" name="userInfo" id="userInfo" th:object="${account}">
+
+            <h3 th:text="#{userInfo}">User Information</h3>
+
+            <table>
+                <tr>
+                    <td>
+                        <a href="/account/newAccountForm?lang=en_US">English(US)</a>
+                    </td>
+                    <td>
+                        <a href="/account/newAccountForm?lang=zh_CN">简体中文</a>
+                    </td>
+                <tr>
+                <tr>
+                    <td th:text="#{userId}">User ID:</td>
+                    <td>
+                        <input type="text" name="username" id="username" onblur="usernameIsExist();"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td id="usernameInfo" colspan="2"></td>
+                </tr>
+                <tr>
+                    <td th:text="#{newPassword}">New password:</td>
+                    <td><input type="password" name="password" id="password"/></td>
+                </tr>
+                <tr>
+                    <td th:text="#{repeatPassword}">Repeat password:</td>
+                    <td><input type="password" name="repeatedPassword" id="repeatedPassword"/></td>
+                </tr>
+            </table>
+
+            <div th:replace="account/includeAccountFields">
+            </div>
+
+            <input type="submit" name="newAccount" th:value="#{saveAccountInfo}"/>
+
+        </form>
+    </div>
+</div>
+
+<footer th:replace="common/template_menu::footer">
+</footer>
+</body>
+</html>

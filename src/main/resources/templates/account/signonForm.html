@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/template_head::head('Signon')">
+
+    <script type="text/javascript">
+        function myReload() {
+            document.getElementById("CreateCheckCode").src = document.getElementById("CreateCheckCode").src+ "?nocache=" + new Date().getTime();
+        }
+    </script>
+
+</head>
+<body>
+<header th:replace="common/template_menu::header">
+</header>
+
+<div id="Content">
+    <div id="Catalog">
+        <form action="/account/signon" method="post">
+            <p th:text="#{signon_msg_t}">Please enter your username and password.</p>
+            <table>
+                <tr>
+                    <td>
+                        <a href="/account/signonForm?lang=en_US">English(US)</a>
+                    </td>
+                    <td>
+                        <a href="/account/signonForm?lang=zh_CN">简体中文</a>
+                    </td>
+                <tr>
+                    <td th:text="#{username}">Username:</td>
+                    <td>
+                        <input type="text" name="username" id="username"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td th:text="#{pass}">Password:</td>
+                    <td>
+                        <input type="password" name="password" id="password"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td th:text="#{verificationCode}">验证码:</td>
+                    <td>
+                        <input type="text" name="checkCode" id="checkCode"/>
+                    </td>
+                    <td>
+                        <img src="/account/pictureCheckCode" id="CreateCheckCode" align="middle" >
+                        <br>
+                        <a href="" onclick="myReload()" style="font-size:12px;color:red;" th:text="#{signon_msg_v}">看不清，换一个</a>
+                    </td>
+                </tr>
+            </table>
+
+            <input type="submit" name="signon" th:value="#{login}"/>
+        </form>
+
+        <div th:text="#{signon_msg_b}">Need a user name and password?</div><a href="/account/newAccountForm" th:text="#{signon_msg_b2}">Register Now!</a>
+
+    </div>
+</div>
+
+<footer th:replace="common/template_menu::footer">
+</footer>
+</body>
+</html>

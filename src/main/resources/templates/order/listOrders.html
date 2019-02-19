@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/template_head::head('Orders')">
+
+</head>
+
+<body>
+<header th:replace="common/template_menu::header">
+</header>
+
+<div id="Content">
+    <h2>My Orders</h2>
+
+    <table>
+        <tr>
+            <th>Order ID</th>
+            <th>Date</th>
+            <th>Total Price</th>
+        </tr>
+
+        <tr th:each="orders : ${session.orderList}">
+            <td><a th:href="@{/order/viewOrder(orderId=${orders.orderId})}" th:text="${orders.orderId}"></a></td>
+            <td th:text="${orders.orderDate}"></td>
+            <td th:text="${orders.totalPrice}"></td>
+        </tr>
+    </table>
+</div>
+
+<footer th:replace="common/template_menu::footer">
+</footer>
+</body>
+</html>
