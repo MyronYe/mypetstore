@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/template_head::head('Product: '+${product.name})">
+
+</head>
+
+<body>
+<header th:replace="common/template_menu::header">
+</header>
+
+<div id="Content">
+
+    <div id="BackLink">
+        <a th:href="@{/catalog/category(categoryId=${session.category.categoryId})}">Return to Category</a>
+    </div>
+
+    <div id="Catalog">
+        <h2 th:text="${session.product.name}">Product Name</h2>
+
+        <table>
+            <tr>
+                <th>Item ID</th>
+                <th>Product ID</th>
+                <th>Description</th>
+                <th>List Price</th>
+                <th>&nbsp;</th>
+            </tr>
+            <!-- list -->
+            <tr th:each="item : ${session.itemList}">
+                <td>
+                    <a th:href="@{/catalog/item(itemId=${item.itemId})}" th:text="${item.itemId}">EST-16</a>
+                </td>
+                <td th:text="${item.product.productId}">FL-DLH-02</td>
+                <td th:text="${item.attribute1}?:' '+ ${item.attribute2}+ ${item.attribute3}+ ${item.attribute4} +${item.attribute5} +${product.name}">Adult Female Persian</td>
+                <td th:text="${item.listPrice}">$93.50</td>
+                <td><a class="Button" th:href="@{/cart/addItemToCart(workingItemId=${item.itemId})}">Add to Cart</a></td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<footer th:replace="common/template_menu::footer">
+</footer>
+</body>
+</html>

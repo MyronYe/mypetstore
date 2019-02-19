@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/template_head::head('Category: '+${category.name})">
+
+</head>
+
+<body>
+<header th:replace="common/template_menu::header">
+
+</header>
+
+<div id="Content">
+
+    <div id="BackLink">
+        <a href="/catalog/main">Return to Main Menu</a>
+    </div>
+
+    <div id="Catalog">
+
+        <h2 th:text="${session.category.name}">category name</h2>
+
+        <table>
+            <tr>
+                <th>Product ID</th>
+                <th>Name</th>
+            </tr>
+            <!-- 循环 -->
+            <tr th:each="product : ${session.productList}">
+                <td><a th:href="@{/catalog/product(productId=${product.productId})}" th:text="${product.productId}">FL-DLH-02</a>
+                </td>
+                <td th:text="${product.name}">Persian</td>
+            </tr>
+        </table>
+
+    </div>
+
+</div>
+
+<footer th:replace="common/template_menu::footer">
+
+</footer>
+</body>
+</html>
