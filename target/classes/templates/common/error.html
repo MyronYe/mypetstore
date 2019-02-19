@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/template_head::head('Error')">
+
+</head>
+
+<body>
+<header th:replace="common/template_menu::header">
+</header>
+
+<div id="Content" th:text="${message}">
+</div>
+
+<footer th:replace="common/template_menu::footer">
+</footer>
+</body>
+</html>

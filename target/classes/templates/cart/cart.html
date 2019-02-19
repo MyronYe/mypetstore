@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/template_head::head('Cart')">
+
+</head>
+
+<body>
+<header th:replace="common/template_menu::header">
+</header>
+<script type="text/javascript">
+    var xmlHttpRequest;
+    var eleName;
+    function createXMLHttpRequest()
+    {
+        if (window.XMLHttpRequest) //非IE浏览器
+        {
+            xmlHttpRequest = new XMLHttpRequest();
+        }
+        else if (window.ActiveObject)//IE6以上浏览器
+        {
+            xmlHttpRequest = new ActiveObject("Msxml2.XMLHTTP");
+        }
+        else //IE6及以下浏览器
+        {
+            xmlHttpRequest = new ActiveObject("Microsoft.XMLHTTP");
+        }
+    }
+
+    function update(eleId)
+    {
+        var quantity = document.getElementById(eleId).value;
+        eleName = eleId +"total";
+        sendRequest("/cart/cartItemValidation?eleId=" + eleId + "&quantity=" + quantity);
+    }
+
+    function sendRequest(url){
+        createXMLHttpRequest();
+        xmlHttpRequest.open("GET", url, true);
+        xmlHttpRequest.onreadystatechange = processResponse;
+        xmlHttpRequest.send(null);
+    }
+
+    function processResponse(){
+        if(xmlHttpRequest.readyState == 4){
+            if(xmlHttpRequest.status == 200){
+                var responseInfo = xmlHttpRequest.responseXML.getElementsByTagName("msg")[0].firstChild.data;
+                var str = new String(responseInfo);
+                var div1 = document.getElementById(eleName);
+                if(str.split('#')[0] == "NotExist"){
+                    div1.parentNode.parentNode.parentNode.removeChild(div1.parentNode.parentNode);
+                }
+                else{
+                    div1.innerHTML = str.split('#')[0];
+                }
+
+                var div2 = document.getElementById("subTotal")
+                div2.innerHTML = "Sub Total:" + str.split('#')[1];
+            }
+        }
+    }
+</script>
+
+<div id="Content">
+    <div id="BackLink">
+        <a href="/catalog/main">Return to Main Menu</a>
+    </div>
+
+    <div id="Catalog">
+
+        <div id="Cart">
+
+            <h2>Shopping Cart</h2>
+            <form action="/cart/updateCartQuantities" method="post" name="cart">
+                <table>
+                    <tr>
+                        <th><b>Item ID</b></th>
+                        <th><b>Product ID</b></th>
+                        <th><b>Description</b></th>
+                        <th><b>In Stock?</b></th>
+                        <th><b>Quantity</b></th>
+                        <th><b>List Price</b></th>
+                        <th><b>Total Cost</b></th>
+                        <th>&nbsp;</th>
+                    </tr>
+
+                    <tr th:if="${session.cart.numberOfItems == 0}">
+                        <td colspan="8"><b>Your cart is empty.</b></td>
+                    </tr>
+
+                    <tr th:each="cartItem : ${session.cart.cartItems}">
+                        <td>
+                            <a th:href="@{/catalog/item(itemId=${cartItem.item.itemId})}" th:text="${cartItem.item.itemId}"></a>
+                        </td>
+                        <td th:text="${cartItem.item.product.productId}">
+                        </td>
+                        <td th:text="${cartItem.item.attribute1}?:' '+ ${cartItem.item.attribute2}+ ${cartItem.item.attribute3}+ ${cartItem.item.attribute4}+ ${cartItem.item.attribute5}+ ${cartItem.item.product.name}"></td>
+                        <td th:text="${cartItem.inStock}">
+                        </td>
+                        <td>
+                            <input type="text" th:id="${cartItem.item.itemId}" th:name="${cartItem.item.itemId}" th:value="${cartItem.quantity}" onblur="update(this.name)"/>
+                        </td>
+                        <td th:text="${cartItem.item.listPrice}"></td>
+                        <td th:text="${cartItem.total}" th:value="${cartItem.total}" th:id="${cartItem.item.itemId} + 'total'" th:name="${cartItem.item.itemId}+ 'total'"></td>
+                        <td>
+                            <a th:href="@{/cart/removeItemFromCart(workingItemId=${cartItem.item.itemId})}" class="Button">Remove</a>
+                        </td>
+                    </tr>
+
+                    <tr th:if="${session.cart.numberOfItems != 0}">
+                        <td colspan="6" th:text="'Sub Total:' + ${session.cart.getSubTotal()}" th:value="'Sub Total:' + ${session.cart.getSubTotal()}" id="subTotal">
+                            Sub Total:100
+                        </td>
+
+                        <td>&nbsp;</td>
+                        <td>
+                            <input type="submit" value="Update Cart"/>
+                        </td>
+                    </tr>
+                    <tr th:if="${session.cart.numberOfItems == 0}">
+                        <td colspan="7">
+                            <input type="submit" value="Update Cart"/>
+                        </td>
+                        <td>&nbsp;</td>
+                    </tr>
+                </table>
+            </form>
+
+                <a href="/order/newOrderForm" class="Button" th:if="${session.cart.numberOfItems > 0}">Proceed to Checkout</a>
+        </div>
+
+        <div id="Separator">&nbsp;</div>
+    </div>
+</div>
+
+<footer th:replace="common/template_menu::footer">
+</footer>
+</body>
+</html>
